@@ -26,17 +26,13 @@ const fns = {
 }
 
 // user data
+// code is data and data is code!
 data = [
     "do",
     ["def", "p1", ["drawPoint", { x: 0, y: 0 }, "blue"]],
     ["def", "p2", ["drawPoint", { x: 1, y: 1 }, "blue"]],
     ["def", "p3", ["drawPoint", { x: 1, y: 0 }, "blue"]],
     ["rotate", ["drawLine", "p1", "p2", "yellow"], 90],
-    // const drawTriangle = function (left, top, right, color) {
-    //     drawLine(left, top, color);
-    //     drawLine(top, right, color);
-    //     drawLine(left, right, color);
-    // }
     ["def", "drawTriangle",
         ["fn", ["left", "top", "right", "color"],
             ["do",
@@ -46,7 +42,6 @@ data = [
             ],
         ],
     ],
-    // drawTriangle(p1, p2, p3, "yellow")
     ["drawTriangle", "p1", "p2", "p3", "yellow"],
 ]
 
