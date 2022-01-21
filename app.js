@@ -15,13 +15,21 @@ const fns = {
     rotate: (s, pi) => console.log(s, pi),
 }
 
-// main
+// user data
 data = {
     instructions: [
-        { functionName: "drawPoint", args: [{ x: 0, y: 0 }, "blue"] },
-        { functionName: "drawPoint", args: [{ x: 1, y: 1 }, "blue"] },
-        { functionName: "drawLine", args: [{ x: 0, y: 0 }, { x: 1, y: 1 }, "yellow"] },
+        ["drawPoint", { x: 0, y: 0 }, "blue"],
+        ["drawPoint", { x: 1, y: 1 }, "blue"],
+        ["drawLine", { x: 0, y: 0 }, { x: 1, y: 1 }, "yellow"],
     ]
 }
 
-data.instructions.forEach((ins) => fns[ins.functionName](...ins.args));
+// main
+data.instructions.forEach(([fname, ...args]) => fns[fname](...args));
+
+// output
+/*
+{ x: 0, y: 0 } blue
+{ x: 1, y: 1 } blue
+{ x: 0, y: 0 } { x: 1, y: 1 } yellow
+*/
