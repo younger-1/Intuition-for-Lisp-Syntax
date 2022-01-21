@@ -16,20 +16,31 @@ const fns = {
 }
 
 // user data
+
 data = {
     instructions: [
         ["drawPoint", { x: 0, y: 0 }, "blue"],
         ["drawPoint", { x: 1, y: 1 }, "blue"],
-        ["drawLine", { x: 0, y: 0 }, { x: 1, y: 1 }, "yellow"],
+        // rotate(drawLine({ x: 0, y: 0 }, { x: 1, y: 1 }, 'yellow'), 90)
+        ["rotate", ["drawLine", { x: 0, y: 0 }, { x: 1, y: 1 }, 'yellow'], 90],
     ]
 }
 
 // main
-data.instructions.forEach(([fname, ...args]) => fns[fname](...args));
+const parseInstruction = (ins) => {
+    if (!Array.isArray(ins)) {
+        // this must be a primitive argument, like {x: 0, y: 0}
+        return ins;
+    }
+    const [fName, ...args] = ins;
+    return fns[fName](...args.map(parseInstruction));
+};
+data.instructions.forEach(parseInstruction);
 
 // output
 /*
 { x: 0, y: 0 } blue
 { x: 1, y: 1 } blue
 { x: 0, y: 0 } { x: 1, y: 1 } yellow
+undefined 90
 */
