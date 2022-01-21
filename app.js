@@ -8,29 +8,41 @@
 // drawCircle(point, radius, 'red')
 // rotate(shape, 90)
 
+const variables = {}
 const fns = {
     // normal
-    drawPoint: (x, color) => console.log(x, color),
-    drawLine: (x, y, color) => console.log(x, y, color),
-    drawCircle: (x, r, color) => console.log(x, r, color),
-    rotate: (s, pi) => console.log(s, pi),
+    drawPoint: (x, color) => [x, color],
+    drawLine: (x, y, color) => [x, y, color],
+    drawCircle: (x, r, color) => [x, r, color],
+    rotate: (s, pi) => {
+        console.log(s, pi);
+        return [s, pi];
+    },
     // special
     do: (...args) => args[args.length - 1],
+    def: (name, value) => {
+        variables[name] = value;
+    },
 }
 
 // user data
-
 data = [
     "do",
-    ["drawPoint", { x: 0, y: 0 }, "blue"],
-    ["drawPoint", { x: 1, y: 1 }, "blue"],
-    // rotate(drawLine({ x: 0, y: 0 }, { x: 1, y: 1 }, 'yellow'), 90)
-    ["rotate", ["drawLine", { x: 0, y: 0 }, { x: 1, y: 1 }, 'yellow'], 90],
+    // const p1 = drawPoint({ x: 0, y: 0 }, "blue")
+    // const p2 = drawPoint({ x: 1, y: 1 }, "blue")
+    // const myline = drawLine(p1, p2, "yellow")
+    ["def", "p1", ["drawPoint", { x: 0, y: 0 }, "blue"]],
+    ["def", "p2", ["drawPoint", { x: 1, y: 1 }, "blue"]],
+    ["def", "myline", ["drawLine", "p1", "p2", "yellow"]],
+    ["rotate", "myline", 90],
 ]
 
 
 // main
 const parseInstruction = (ins) => {
+    if (variables[ins]) {
+        return variables[ins];
+    }
     if (!Array.isArray(ins)) {
         // this must be a primitive argument, like {x: 0, y: 0}
         return ins;
@@ -42,8 +54,5 @@ parseInstruction(data);
 
 // output
 /*
-{ x: 0, y: 0 } blue
-{ x: 1, y: 1 } blue
-{ x: 0, y: 0 } { x: 1, y: 1 } yellow
-undefined 90
+[ [ { x: 0, y: 0 }, 'blue' ], [ { x: 1, y: 1 }, 'blue' ], 'yellow' ] 90
 */
